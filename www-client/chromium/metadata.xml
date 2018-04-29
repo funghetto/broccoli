@@ -2,7 +2,7 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>composizion3@hotmail.com</email>
+		<email>composizion3@protonmail.ch</email>
 		<name>Michele Renosto walkingcorpse</name>
 	</maintainer>
 	<longdescription>Chromium with the option to do an Official build and more configuration options</longdescription>
