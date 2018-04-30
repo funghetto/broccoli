@@ -1,5 +1,5 @@
 <repositories encoding="unicode" version="1.1">
-  <repo priority="100" quality="experimental">
+  <repo quality="experimental" status="unofficial">
     <name>walkingcorpse</name>
     <description>chromium ebuild</description>
     <homepage>https://github.com/funghetto/broccoli</homepage>
@@ -7,6 +7,6 @@
       <email>composizion3@protonmail.ch</email>
       <name>Michele Renosto walkingcorpse</name>
     </owner>
-    <source type="git">https://github.com/funghetto/broccoli.git</source>
+    <source type="git">git://github.com/funghetto/broccoli.git</source>
   </repo>
 </repositories>
