@@ -1,0 +1,12 @@
+<repositories encoding="unicode" version="1.1">
+  <repo priority="100" quality="experimental">
+    <name>broccoli</name>
+    <description>chromium ebuild</description>
+    <homepage>https://github.com/funghetto/broccoli</homepage>
+    <owner>
+      <email>composizion3@protonmail.ch</email>
+      <name>Michele Renosto walkingcorpse</name>
+    </owner>
+    <source type="git">https://github.com/funghetto/broccoli</source>
+  </repo>
+</repositories>
