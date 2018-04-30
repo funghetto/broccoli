@@ -1,6 +1,6 @@
 <repositories encoding="unicode" version="1.1">
   <repo priority="100" quality="experimental">
-    <name>broccoli</name>
+    <name>walkingcorpse</name>
     <description>chromium ebuild</description>
     <homepage>https://github.com/funghetto/broccoli</homepage>
     <owner>
