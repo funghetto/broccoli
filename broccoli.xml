@@ -7,6 +7,6 @@
       <email>composizion3@protonmail.ch</email>
       <name>Michele Renosto walkingcorpse</name>
     </owner>
-    <source type="git">https://github.com/funghetto/broccoli</source>
+    <source type="git">https://github.com/funghetto/broccoli.git</source>
   </repo>
 </repositories>
