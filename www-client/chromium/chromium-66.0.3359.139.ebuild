@@ -16,9 +16,13 @@ SRC_URI="https://commondatastorage.googleapis.com/chromium-browser-official/${P}
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="amd64 ~arm64 ~x86"
-IUSE="+official strip-debug-symb component-build cups gnome-keyring +hangouts jumbo-build kerberos neon pic +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg +system-icu +system-libvpx +tcmalloc widevine"
-RESTRICT="!system-ffmpeg? ( proprietary-codecs? ( bindist ) )"
-
+IUSE="+official +extensions debug debug-devtools strip-debug-symb component-build cups gnome-keyring +hangouts jumbo-build kerberos neon pic +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg +system-icu +system-libvpx +tcmalloc widevine"
+RESTRICT="!system-ffmpeg? ( proprietary-codecs? ( bindist )"
+REQUIRED_USE="
+	debug ( !official )
+	debug-devtools ( debug && !official)
+	"
+	
 COMMON_DEPEND="
 	app-accessibility/at-spi2-atk:2
 	app-arch/bzip2:=
@@ -359,6 +363,7 @@ src_prepare() {
 
 	# Remove most bundled libraries. Some are still needed.
 	build/linux/unbundle/remove_bundled_libraries.py "${keeplibs[@]}" --do-remove || die
+	
 	if use official; then
 		sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' tools/generate_shim_headers/generate_shim_headers.py || die
 	fi
@@ -510,6 +515,26 @@ src_configure() {
 		myconf_gn+=" strip_debug_info=true"
 		myconf_gn+=" symbol_level=0"
 	fi
+	myconf_gn+=" enable_oculus_vr=$(usex oculus true false)"
+	myconf_gn+=" enable_extensions=$(usex extensions true false)" 
+	myconf_gn+=" enable_nacl=$(usex nacl true false)"
+	myconf_gn+=" is_debug=$(usex debug true false)"
+	myconf_gn+=" enable_openvr=$(usex openvr true false)"
+	myconf_gn+=" enable_plugins=$(usex plugins true false)"
+	myconf_gn+=" enable_pdf=$(usex pdf true false)"
+	myconf_gn+=" enable_profiling=$(usex profiling true false)"
+	myconf_gn+=" enable_vr=$(usex vr true false)"
+	myconf_gn+=" enable_vulkan=$(usex vulkan true false)"
+	myconf_gn+=" enable_wayland_server=$(usex wayland true false)"
+	myconf_gn+=" fieldtrial_testing_like_official_build=$(usex fieldtrial-testing true false)"
+	myconf_gn+=" include_vr_data=$(usex vr-data true false)"
+	myconf_gn+=" is_asan=$(usex asan true false)"
+	myconf_gn+=" is_cfi=$(usex cfi true false)"
+	myconf_gn+=" is_clang=$(usex clang true false)"
+	myconf_gn+=" is_unsafe_developer_build=$(usex unsafedevfeatures true false)"
+	myconf_gn+=" media_use_ffmpeg=$(usex enableffmpeg true false)"
+	
+	
 	
 	# Set up Google API keys, see http://www.chromium.org/developers/how-tos/api-keys .
 	# Note: these are for Gentoo use ONLY. For your own distribution,
