@@ -514,6 +514,7 @@ src_configure() {
 		myconf_gn+=" sanitizer_no_symbols=true"
 		myconf_gn+=" strip_debug_info=true"
 		myconf_gn+=" symbol_level=0"
+		myconf_gn+=" use_crash_key_stubs=true"
 	fi
 	myconf_gn+=" enable_oculus_vr=$(usex oculus true false)"
 	myconf_gn+=" enable_extensions=$(usex extensions true false)" 
@@ -533,6 +534,13 @@ src_configure() {
 	myconf_gn+=" is_clang=$(usex clang true false)"
 	myconf_gn+=" is_unsafe_developer_build=$(usex unsafedevfeatures true false)"
 	myconf_gn+=" media_use_ffmpeg=$(usex enableffmpeg true false)"
+	use_gtk3
+	use_system_lcms2
+	use_system_libdrm
+	use_system_libpng
+	use_system_zlib
+	use_vaapi
+	
 	
 	
 	
