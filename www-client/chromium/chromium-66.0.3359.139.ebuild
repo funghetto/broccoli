@@ -22,11 +22,11 @@ IUSE="+official +extensions debug oculus nacl openvr profiling vr vulkan wayland
 	  
 RESTRICT="!system-ffmpeg? ( proprietary-codecs? ( bindist ) )"
 REQUIRED_USE="
-	debug ( !official )
-	debug-devtools ( debug !official )
-	official ( !debug !debug-devtools !profiling fieldtrial-testing-like-official plugins pdf cfi clang !component-build extensions !asan !unsafedevfeatures )
-	component-build ( !official )
-	unsafedevfeatures ( !official )
+	debug? ( !official )
+	debug-devtools? ( debug !official )
+	official? ( !debug !debug-devtools !profiling fieldtrial-testing-like-official plugins pdf cfi clang !component-build extensions !asan !unsafedevfeatures )
+	component-build? ( !official )
+	unsafedevfeatures? ( !official )
 	"
 	
 COMMON_DEPEND="
