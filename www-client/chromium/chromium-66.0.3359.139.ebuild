@@ -16,11 +16,17 @@ SRC_URI="https://commondatastorage.googleapis.com/chromium-browser-official/${P}
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="amd64 ~arm64 ~x86"
-IUSE="+official +extensions debug oculus nacl openvr profiling vr vulkan wayland +fieldtrial-testing-like-official vr-data asan unsafedevfeatures +gtk3 +system-libdrm +system-libpng +system-zlib vaapi +system-lcms +clang +cfi +pdf +plugins debug-devtools strip-debug-symb component-build cups gnome-keyring +hangouts jumbo-build kerberos neon pic +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg +system-icu +system-libvpx +tcmalloc widevine"
+IUSE="+official +extensions debug oculus nacl openvr profiling vr vulkan wayland +fieldtrial-testing-like-official vr-data asan unsafedevfeatures +gtk3 +system-libdrm +system-libpng +system-zlib vaapi 
+	  +system-lcms +clang +cfi +pdf +plugins debug-devtools strip-debug-symb component-build cups gnome-keyring +hangouts jumbo-build kerberos neon pic +proprietary-codecs pulseaudio selinux +suid 
+	  +system-ffmpeg +system-icu +system-libvpx +tcmalloc widevine"
+	  
 RESTRICT="!system-ffmpeg? ( proprietary-codecs? ( bindist )"
 REQUIRED_USE="
 	debug ( !official )
-	debug-devtools ( debug && !official)
+	debug-devtools ( debug !official )
+	official ( !debug !debug-devtools !profiling fieldtrial-testing-like-official plugins pdf cfi clang !component-build extensions !asan !unsafedevfeatures )
+	component-build ( !official )
+	unsafedevfeatures ( !official )
 	"
 	
 COMMON_DEPEND="
@@ -54,8 +60,19 @@ COMMON_DEPEND="
 		)
 		!=net-fs/samba-4.5.12
 		media-libs/opus:=
-	)
+					)
+	system-lcms ( media-libs/lcms:= )
+	system-libdrm ( >=x11-libs/libdrm-2.4.91:= )
+	system-libpng ( media-libs/libpng:= )
+	system-zlib? ( sys-libs/zlib:= ) 
 	official? ( sys-devel/lld:= )
+	clang? ( 
+		>=sys-devel/clang-7:=
+		>=sys-devel/llvm-7:=
+		)
+	!clang? ( >=sys-devel/gcc-8:= )
+	vaapi? (
+		 x11-libs/libva
 	sys-apps/dbus:=
 	sys-apps/pciutils:=
 	virtual/udev
