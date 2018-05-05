@@ -16,7 +16,7 @@ SRC_URI="https://commondatastorage.googleapis.com/chromium-browser-official/${P}
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="amd64 ~arm64 ~x86"
-IUSE="+official +extensions debug debug-devtools strip-debug-symb component-build cups gnome-keyring +hangouts jumbo-build kerberos neon pic +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg +system-icu +system-libvpx +tcmalloc widevine"
+IUSE="+official +extensions debug oculus nacl openvr profiling vr vulkan wayland +fieldtrial-testing-like-official vr-data asan unsafedevfeatures +gtk3 +system-libdrm +system-libpng +system-zlib vaapi +system-lcms +clang +cfi +pdf +plugins debug-devtools strip-debug-symb component-build cups gnome-keyring +hangouts jumbo-build kerberos neon pic +proprietary-codecs pulseaudio selinux +suid +system-ffmpeg +system-icu +system-libvpx +tcmalloc widevine"
 RESTRICT="!system-ffmpeg? ( proprietary-codecs? ( bindist )"
 REQUIRED_USE="
 	debug ( !official )
@@ -105,7 +105,7 @@ DEPEND="${COMMON_DEPEND}
 	sys-apps/hwids[usb(+)]
 	>=sys-devel/bison-2.4.3
 	sys-devel/flex
-	>=sys-devel/clang-5
+	>=sys-devel/clang-7
 	virtual/pkgconfig
 	dev-vcs/git
 	$(python_gen_any_dep '
@@ -516,6 +516,7 @@ src_configure() {
 		myconf_gn+=" symbol_level=0"
 		myconf_gn+=" use_crash_key_stubs=true"
 	fi
+	
 	myconf_gn+=" enable_oculus_vr=$(usex oculus true false)"
 	myconf_gn+=" enable_extensions=$(usex extensions true false)" 
 	myconf_gn+=" enable_nacl=$(usex nacl true false)"
@@ -527,19 +528,19 @@ src_configure() {
 	myconf_gn+=" enable_vr=$(usex vr true false)"
 	myconf_gn+=" enable_vulkan=$(usex vulkan true false)"
 	myconf_gn+=" enable_wayland_server=$(usex wayland true false)"
-	myconf_gn+=" fieldtrial_testing_like_official_build=$(usex fieldtrial-testing true false)"
+	myconf_gn+=" fieldtrial_testing_like_official_build=$(usex fieldtrial-testing-like-official true false)"
 	myconf_gn+=" include_vr_data=$(usex vr-data true false)"
 	myconf_gn+=" is_asan=$(usex asan true false)"
 	myconf_gn+=" is_cfi=$(usex cfi true false)"
 	myconf_gn+=" is_clang=$(usex clang true false)"
 	myconf_gn+=" is_unsafe_developer_build=$(usex unsafedevfeatures true false)"
 	myconf_gn+=" media_use_ffmpeg=$(usex enableffmpeg true false)"
-	use_gtk3
-	use_system_lcms2
-	use_system_libdrm
-	use_system_libpng
-	use_system_zlib
-	use_vaapi
+	myconf_gn+=" use_gtk3=$(usex gtk3 true false)"
+	myconf_gn+=" use_system_lcms2=$(usex system-lcms true false)"
+	myconf_gn+=" use_system_libdrm=$(usex system-libdrm true false)"
+	myconf_gn+=" use_system_libpng=$(usex system-libpng true false)"
+	myconf_gn+=" use_system_zlib=$(usex system-zlib true false)"
+	myconf_gn+=" use_vaapi=$(usex vaapi true false)"
 	
 	
 	
