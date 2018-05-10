@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>composizion3@protonmail.ch</email>
+		<name>Michele Renosto walkingcorpse</name>
+	</maintainer>
+	<longdescription>Chromium with the option to do an Official build and more configuration options</longdescription>
+	<use>
+		<flag name="component-build">Split build into more shared libraries to speed up linking. Mostly intended for debugging and development, NOT RECOMMENDED for general use.</flag>
+		<flag name="hangouts">Enable support for Google Hangouts features such as screen sharing</flag>
+		<flag name="jumbo-build">Combine source files to speed up build process.</flag>
+		<flag name="pic">Disable optimized assembly code that is not PIC friendly</flag>
+		<flag name="proprietary-codecs">Enable proprietary codecs like H.264, MP3</flag>
+		<flag name="suid">Build the SUID sandbox, which is only needed on CONFIG_USER_NS=n kernels</flag>
+		<flag name="system-ffmpeg">Use system ffmpeg instead of the bundled one</flag>
+		<flag name="system-icu">Use system icu instead of the bundled one</flag>
+		<flag name="system-libvpx">Use system libvpx instead of the bundled one</flag>
+		<flag name="tcmalloc">Use bundled tcmalloc instead of system malloc</flag>
+		<flag name="widevine">Unsupported closed-source DRM capability (required by Netflix VOD)</flag>
+		<flag name="official">Optimize it like an official build, on Linux this turns on LTO and produces a faster binary</flag>
+		<flag name="extensions"> </flag>
+		<flag name="debug"> </flag>
+		<flag name="oculus"> </flag>
+		<flag name="nacl"> </flag>
+		<flag name="profiling"> </flag>
+		<flag name="vr"> </flag>
+		<flag name="vulkan"> </flag>
+		<flag name="wayland"> </flag>
+		<flag name="fieldtrial-testing-like-official"> </flag>
+		<flag name="vr-data"> </flag>
+		<flag name="asan"> </flag>
+		<flag name="unsafedevfeatures"> </flag>
+		<flag name="gtk3"> </flag>
+		<flag name="system-libpng"> </flag>
+		<flag name="system-zlib"> </flag>
+		<flag name="vaapi"> </flag>
+		<flag name="system-lcms"> </flag>
+		<flag name="gcc"> </flag>
+		<flag name="cfi"> </flag>
+		<flag name="debug-devtools"> </flag>
+		<flag name="strip-debug-symb"> </flag>
+		<flag name="lld"> </flag>
+		<flag name="system-libdrm"> </flag>
+		<flag name="strip-debug-symb">Strip debug symbols</flag>
+	</use>
+</pkgmetadata>
