@@ -16,7 +16,7 @@ SRC_URI="https://commondatastorage.googleapis.com/chromium-browser-official/${P}
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="amd64 ~arm64 ~x86"
-IUSE="+official +extensions debug oculus nacl profiling vr vulkan wayland +fieldtrial-testing-like-official vr-data asan unsafedevfeatures +gtk3 +system-libpng +system-zlib vaapi 
+IUSE="+official +extensions debug oculus profiling vr vulkan wayland +fieldtrial-testing-like-official vr-data asan unsafedevfeatures +gtk3 +system-libpng +system-zlib vaapi 
 	  +system-lcms gcc +cfi debug-devtools strip-debug-symb component-build cups gnome-keyring +hangouts jumbo-build kerberos neon pic +proprietary-codecs pulseaudio selinux +suid 
 	  +system-ffmpeg +system-icu +system-libvpx +tcmalloc widevine +lld +system-libdrm"
 	  
@@ -29,6 +29,7 @@ REQUIRED_USE="
 	unsafedevfeatures? ( !official )
 	cfi? ( lld )
 	asan? ( lld )
+	lld? ( !gcc )
 	"
 	
 COMMON_DEPEND="
@@ -533,7 +534,7 @@ src_configure() {
 	
 	myconf_gn+=" enable_oculus_vr=$(usex oculus true false)"
 	myconf_gn+=" enable_extensions=$(usex extensions true false)" 
-	myconf_gn+=" enable_nacl=$(usex nacl true false)"
+#	myconf_gn+=" enable_nacl=$(usex nacl true false)"
 	myconf_gn+=" is_debug=$(usex debug true false)"
 #	myconf_gn+=" enable_openvr=$(usex openvr true false)"
 #	myconf_gn+=" enable_plugins=$(usex plugins true false)"
