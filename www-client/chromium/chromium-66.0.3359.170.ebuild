@@ -383,6 +383,28 @@ src_prepare() {
 	if use official; then
 		sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' tools/generate_shim_headers/generate_shim_headers.py || die
 	fi
+	
+	if use gcc; then
+		ewarn "Applying patches from fedora to build with GCC 8. It is unsupported upstream and the output binary will be slower."
+		epatch "${FILESDIR}/chromium-65.0.3325.162-boolfix.patch"
+		epatch "${FILESDIR}/chromium-65.0.3325.146-GCC-IDB-methods-String-renamed-to-GetString.patch"
+		epatch "${FILESDIR}/chromium-65.0.3325.146-gcc-round-fix.patch"
+		epatch "${FILESDIR}/chromium-65.0.3325.146-memcpy-fix.patch"
+		epatch "${FILESDIR}/chromium-65.0.3325.162-epel7-stdc++.patch"
+		epatch "${FILESDIR}/chromium-66.0.3359.117-GCC-build-fix-base-Optional-T-requires-the-full-decl.patch"
+		epatch "${FILESDIR}/chromium-66.0.3359.117-gcc-copy-constructor-fix.patch"
+		epatch "${FILESDIR}/chromium-66.0.3359.117-GCC-do-not-use-initializer-list-for-NoDestructor-of-.patch"
+		epatch "${FILESDIR}/chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.patch"
+		epatch "${FILESDIR}/chromium-66.0.3359.117-gcc-optional-move-fixes.patch"
+		epatch "${FILESDIR}/chromium-66.0.3359.117-gcc-vector-copy-constructor-fix.patch"
+		epatch "${FILESDIR}/chromium-66.0.3359.117-missing-files.patch"		
+	fi
+	
+	if use system-icu; then 
+			if use official; then
+				epatch "${FILESDIR}/fix-crash-in-is_cfi-true-builds-with-unbundled-ICU.patch"
+			fi
+	fi
 }
 
 bootstrap_gn() {
