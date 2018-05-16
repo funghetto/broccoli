@@ -562,7 +562,7 @@ src_configure() {
 	myconf_gn+=" is_cfi=$(usex cfi true false)"
 	myconf_gn+=" is_clang=$(usex gcc false true)"
 	myconf_gn+=" is_unsafe_developer_build=$(usex unsafedevfeatures true false)"
-	myconf_gn+=" media_use_ffmpeg=$(usex system-ffmpeg true false)"
+	#myconf_gn+=" media_use_ffmpeg=$(usex system-ffmpeg true false)"
 	myconf_gn+=" use_gtk3=$(usex gtk3 true false)"
 	myconf_gn+=" use_vaapi=$(usex vaapi true false)"
 	myconf_gn+=" use_lld=$(usex lld true false)"
