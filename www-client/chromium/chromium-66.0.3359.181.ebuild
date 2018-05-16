@@ -54,7 +54,7 @@ COMMON_DEPEND="
 	media-libs/libpng:=
 	>=media-libs/openh264-1.6.0:=
 	pulseaudio? ( media-sound/pulseaudio:= )
-	>=media-video/ffmpeg-4:= 
+	>=media-video/ffmpeg-3.4.2-r1:= 
 	media-libs/opus:=
 	media-libs/lcms:=
 	lld? ( sys-devel/lld:= )
