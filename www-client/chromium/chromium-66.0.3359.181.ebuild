@@ -213,161 +213,6 @@ src_prepare() {
 	mkdir -p third_party/node/linux/node-linux-x64/bin || die
 	ln -s "${EPREFIX}"/usr/bin/node third_party/node/linux/node-linux-x64/bin/node || die
 
-	local keeplibs=(
-		base/third_party/dmg_fp
-		base/third_party/dynamic_annotations
-		base/third_party/icu
-		base/third_party/nspr
-		base/third_party/superfasthash
-		base/third_party/symbolize
-		base/third_party/valgrind
-		base/third_party/xdg_mime
-		base/third_party/xdg_user_dirs
-		buildtools/third_party/libc++
-		buildtools/third_party/libc++abi
-		chrome/third_party/mozilla_security_manager
-		courgette/third_party
-		net/third_party/mozilla_security_manager
-		net/third_party/nss
-		third_party/WebKit
-		third_party/analytics
-		third_party/angle
-		third_party/angle/src/common/third_party/base
-		third_party/angle/src/common/third_party/smhasher
-		third_party/angle/src/third_party/compiler
-		third_party/angle/src/third_party/libXNVCtrl
-		third_party/angle/src/third_party/trace_event
-		third_party/angle/third_party/glslang
-		third_party/angle/third_party/spirv-headers
-		third_party/angle/third_party/spirv-tools
-		third_party/angle/third_party/vulkan-validation-layers
-		third_party/blink
-		third_party/boringssl
-		third_party/boringssl/src/third_party/fiat
-		third_party/breakpad
-		third_party/breakpad/breakpad/src/third_party/curl
-		third_party/brotli
-		third_party/cacheinvalidation
-		third_party/catapult
-		third_party/catapult/common/py_vulcanize/third_party/rcssmin
-		third_party/catapult/common/py_vulcanize/third_party/rjsmin
-		third_party/catapult/third_party/polymer
-		third_party/catapult/tracing/third_party/d3
-		third_party/catapult/tracing/third_party/gl-matrix
-		third_party/catapult/tracing/third_party/jszip
-		third_party/catapult/tracing/third_party/mannwhitneyu
-		third_party/catapult/tracing/third_party/oboe
-		third_party/catapult/tracing/third_party/pako
-		third_party/ced
-		third_party/cld_3
-		third_party/crc32c
-		third_party/cros_system_api
-		third_party/devscripts
-		third_party/dom_distiller_js
-		third_party/fips181
-		third_party/flatbuffers
-		third_party/flot
-		third_party/freetype
-		third_party/glslang-angle
-		third_party/google_input_tools
-		third_party/google_input_tools/third_party/closure_library
-		third_party/google_input_tools/third_party/closure_library/third_party/closure
-		third_party/googletest
-		third_party/hunspell
-		third_party/iccjpeg
-		third_party/inspector_protocol
-		third_party/jinja2
-		third_party/jstemplate
-		third_party/khronos
-		third_party/leveldatabase
-		third_party/libXNVCtrl
-		third_party/libaddressinput
-		third_party/libaom
-		third_party/libaom/source/libaom/third_party/x86inc
-		third_party/libjingle
-		third_party/libphonenumber
-		third_party/libsecret
-		third_party/libsrtp
-		third_party/libudev
-		third_party/libwebm
-		third_party/libxml/chromium
-		third_party/libyuv
-		third_party/llvm
-		third_party/lss
-		third_party/lzma_sdk
-		third_party/markupsafe
-		third_party/mesa
-		third_party/metrics_proto
-		third_party/modp_b64
-		third_party/node
-		third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2
-		third_party/openmax_dl
-		third_party/ots
-		third_party/pdfium
-		third_party/pdfium/third_party/agg23
-		third_party/pdfium/third_party/base
-		third_party/pdfium/third_party/bigint
-		third_party/pdfium/third_party/freetype
-		third_party/pdfium/third_party/lcms
-		third_party/pdfium/third_party/libopenjpeg20
-		third_party/pdfium/third_party/libpng16
-		third_party/pdfium/third_party/libtiff
-		third_party/pdfium/third_party/skia_shared
-		third_party/ply
-		third_party/polymer
-		third_party/protobuf
-		third_party/protobuf/third_party/six
-		third_party/qcms
-		third_party/s2cellid
-		third_party/sfntly
-		third_party/skia
-		third_party/skia/third_party/gif
-		third_party/skia/third_party/vulkan
-		third_party/smhasher
-		third_party/spirv-headers
-		third_party/spirv-tools-angle
-		third_party/sqlite
-		third_party/swiftshader
-		third_party/swiftshader/third_party/llvm-subzero
-		third_party/swiftshader/third_party/subzero
-		third_party/unrar
-		third_party/usrsctp
-		third_party/vulkan
-		third_party/vulkan-validation-layers
-		third_party/web-animations-js
-		third_party/webdriver
-		third_party/webrtc
-		third_party/widevine
-		third_party/woff2
-		third_party/zlib/google
-		url/third_party/mozilla
-		v8/src/third_party/valgrind
-		v8/src/third_party/utf8-decoder
-		v8/third_party/inspector_protocol
-
-		# gyp -> gn leftovers
-		base/third_party/libevent
-		third_party/adobe
-		third_party/speech-dispatcher
-		third_party/usb_ids
-		third_party/xdg-utils
-		third_party/yasm/run_yasm.py
-	)
-	#if ! use system-ffmpeg; then
-		#keeplibs+=( third_party/ffmpeg third_party/opus )
-	#fi
-	if ! use system-icu; then
-		keeplibs+=( third_party/icu )
-	fi
-		keeplibs+=( third_party/libvpx )
-		keeplibs+=( third_party/libvpx/source/libvpx/third_party/x86inc )
-	if use tcmalloc; then
-		keeplibs+=( third_party/tcmalloc )
-	fi
-
-	# Remove most bundled libraries. Some are still needed.
-	build/linux/unbundle/remove_bundled_libraries.py "${keeplibs[@]}" --do-remove || die
-	
 	if use official; then
 		sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' tools/generate_shim_headers/generate_shim_headers.py || die
 	fi
@@ -433,22 +278,22 @@ src_configure() {
 #		strip-unsupported-flags
 #	fi
 
-	if tc-is-clang; then
-		myconf_gn+=" is_clang=true clang_use_chrome_plugins=false"
-	else
-		myconf_gn+=" is_clang=false"
-	fi
+#	if tc-is-clang; then
+#		myconf_gn+=" is_clang=true clang_use_chrome_plugins=false"
+#	else
+#		myconf_gn+=" is_clang=false"
+#	fi
 
 	# Define a custom toolchain for GN
-	myconf_gn+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
+#	myconf_gn+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
 
-	if tc-is-cross-compiler; then
-		tc-export BUILD_{AR,CC,CXX,NM}
-		myconf_gn+=" host_toolchain=\"//build/toolchain/linux/unbundle:host\""
-		myconf_gn+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:host\""
-	else
-		myconf_gn+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
-	fi
+#	if tc-is-cross-compiler; then
+#		tc-export BUILD_{AR,CC,CXX,NM}
+#		myconf_gn+=" host_toolchain=\"//build/toolchain/linux/unbundle:host\""
+#		myconf_gn+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:host\""
+#	else
+#		myconf_gn+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
+#	fi
 
 	# GN needs explicit config for Debug/Release as opposed to inferring it from build directory.
 	myconf_gn+=" is_debug=false"
@@ -474,29 +319,7 @@ src_configure() {
 	# TODO: use_system_sqlite (http://crbug.com/22208).
 
 	# libevent: https://bugs.gentoo.org/593458
-	local gn_system_libraries=(
-		flac
-		fontconfig
-		freetype
-		# Need harfbuzz_from_pkgconfig target
-		#harfbuzz-ng
-		libdrm
-		libjpeg
-		libpng
-		libwebp
-		libxml
-		libxslt
-		openh264
-		re2
-		snappy
-		yasm
-		zlib
-	)
-	gn_system_libraries+=( ffmpeg opus )
-	if use system-icu; then
-		gn_system_libraries+=( icu )
-	fi
-	build/linux/unbundle/replace_gn_files.py --system-libraries "${gn_system_libraries[@]}" || die
+#	build/linux/unbundle/replace_gn_files.py --system-libraries "${gn_system_libraries[@]}" || die
 
 	# See dependency logic in third_party/BUILD.gn
 	myconf_gn+=" use_system_harfbuzz=true"
@@ -515,7 +338,7 @@ src_configure() {
 	# Never use bundled gold binary. Disable gold linker flags for now.
 	# Do not use bundled clang.
 	# Trying to use gold results in linker crash.
-	myconf_gn+=" use_gold=false use_sysroot=false linux_use_bundled_binutils=false use_custom_libcxx=false"
+#	myconf_gn+=" use_gold=false use_sysroot=false linux_use_bundled_binutils=false use_custom_libcxx=false"
 
 	# Disable forced lld, bug 641556
 	#myconf_gn+=" use_lld=false"
@@ -527,7 +350,7 @@ src_configure() {
 	if use official; then
 		myconf_gn+=" use_lld=true"
 		myconf_gn+=" is_official_build=true"
-		myconf_gn+=" linux_use_bundled_binutils=false"
+		#myconf_gn+=" linux_use_bundled_binutils=false"
 		myconf_gn+=" use_custom_libcxx=false"
 		myconf_gn+=" is_chrome_branded=false"
 	fi
