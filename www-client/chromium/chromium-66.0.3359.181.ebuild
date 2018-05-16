@@ -20,7 +20,7 @@ IUSE="+official +extensions debug oculus profiling vr vulkan wayland +fieldtrial
 	  gcc +cfi debug-devtools strip-debug-symb component-build cups gnome-keyring +hangouts jumbo-build kerberos neon pic +proprietary-codecs pulseaudio selinux +suid 
 	  +system-icu +tcmalloc widevine +lld +swiftshader"
 	  
-RESTRICT="!system-ffmpeg? ( proprietary-codecs? ( bindist ) )"
+#RESTRICT="!system-ffmpeg? ( proprietary-codecs? ( bindist ) )"
 REQUIRED_USE="
 	debug? ( !official )
 	debug-devtools? ( debug !official )
