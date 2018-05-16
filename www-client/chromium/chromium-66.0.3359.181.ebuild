@@ -359,10 +359,8 @@ src_prepare() {
 	if ! use system-icu; then
 		keeplibs+=( third_party/icu )
 	fi
-	if ! use system-libvpx; then
 		keeplibs+=( third_party/libvpx )
 		keeplibs+=( third_party/libvpx/source/libvpx/third_party/x86inc )
-	fi
 	if use tcmalloc; then
 		keeplibs+=( third_party/tcmalloc )
 	fi
