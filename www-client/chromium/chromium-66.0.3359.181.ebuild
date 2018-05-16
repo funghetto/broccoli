@@ -393,6 +393,7 @@ src_prepare() {
 		epatch "${FILESDIR}/chromium-66.0.3359.117-gcc-optional-move-fixes.patch"
 		epatch "${FILESDIR}/chromium-66.0.3359.117-gcc-vector-copy-constructor-fix.patch"
 		epatch "${FILESDIR}/chromium-66.0.3359.117-missing-files.patch"		
+		epatch "${FILESDIR}/chromium-66.0.3359.170-gcc8-alignof.patch"
 	fi
 	
 	if use system-icu; then 
