@@ -60,7 +60,7 @@ COMMON_DEPEND="
 	lld? ( sys-devel/lld:= )
 	gcc? ( >=sys-devel/gcc-8:= )
 	vaapi? ( x11-libs/libva:= )
-	system-libdrm? ( x11-libs/libdrm:= )
+	x11-libs/libdrm:=
 	sys-apps/dbus:=
 	sys-apps/pciutils:=
 	virtual/udev
@@ -353,9 +353,9 @@ src_prepare() {
 		third_party/xdg-utils
 		third_party/yasm/run_yasm.py
 	)
-	if ! use system-ffmpeg; then
-		keeplibs+=( third_party/ffmpeg third_party/opus )
-	fi
+	#if ! use system-ffmpeg; then
+		#keeplibs+=( third_party/ffmpeg third_party/opus )
+	#fi
 	if ! use system-icu; then
 		keeplibs+=( third_party/icu )
 	fi
