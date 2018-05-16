@@ -18,7 +18,7 @@ SLOT="0"
 KEYWORDS="amd64 ~arm64 ~x86"
 IUSE="+official +extensions debug oculus profiling vr vulkan wayland +fieldtrial-testing-like-official vr-data asan unsafedevfeatures +gtk3 vaapi 
 	  gcc +cfi debug-devtools strip-debug-symb component-build cups gnome-keyring +hangouts jumbo-build kerberos neon pic +proprietary-codecs pulseaudio selinux +suid 
-	  +system-icu +tcmalloc widevine +lld"
+	  +system-icu +tcmalloc widevine +lld +swiftshader"
 	  
 RESTRICT="!system-ffmpeg? ( proprietary-codecs? ( bindist ) )"
 REQUIRED_USE="
