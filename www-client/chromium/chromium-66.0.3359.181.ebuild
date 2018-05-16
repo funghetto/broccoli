@@ -16,9 +16,9 @@ SRC_URI="https://commondatastorage.googleapis.com/chromium-browser-official/${P}
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="amd64 ~arm64 ~x86"
-IUSE="+official +extensions debug oculus profiling vr vulkan wayland +fieldtrial-testing-like-official vr-data asan unsafedevfeatures +gtk3 +system-libpng +system-zlib vaapi 
-	  +system-lcms gcc +cfi debug-devtools strip-debug-symb component-build cups gnome-keyring +hangouts jumbo-build kerberos neon pic +proprietary-codecs pulseaudio selinux +suid 
-	  +system-ffmpeg +system-icu +system-libvpx +tcmalloc widevine +lld +system-libdrm"
+IUSE="+official +extensions debug oculus profiling vr vulkan wayland +fieldtrial-testing-like-official vr-data asan unsafedevfeatures +gtk3 vaapi 
+	  gcc +cfi debug-devtools strip-debug-symb component-build cups gnome-keyring +hangouts jumbo-build kerberos neon pic +proprietary-codecs pulseaudio selinux +suid 
+	  +system-icu +tcmalloc widevine +lld"
 	  
 RESTRICT="!system-ffmpeg? ( proprietary-codecs? ( bindist ) )"
 REQUIRED_USE="
@@ -52,21 +52,11 @@ COMMON_DEPEND="
 	>=media-libs/harfbuzz-1.6.0:=[icu(-)]
 	media-libs/libjpeg-turbo:=
 	media-libs/libpng:=
-	system-libvpx? ( media-libs/libvpx:=[postproc,svc] )
 	>=media-libs/openh264-1.6.0:=
 	pulseaudio? ( media-sound/pulseaudio:= )
-	system-ffmpeg? (
-		>=media-video/ffmpeg-3:=
-		|| (
-			media-video/ffmpeg[-samba]
-			>=net-fs/samba-4.5.10-r1[-debug(-)]
-		)
-		!=net-fs/samba-4.5.12
-		media-libs/opus:=
-					)
-	system-lcms? ( media-libs/lcms:= )
-	system-libpng? ( media-libs/libpng:= )
-	system-zlib? ( sys-libs/zlib:= ) 
+	>=media-video/ffmpeg-4:= 
+	media-libs/opus:=
+	media-libs/lcms:=
 	lld? ( sys-devel/lld:= )
 	gcc? ( >=sys-devel/gcc-8:= )
 	vaapi? ( x11-libs/libva:= )
@@ -384,6 +374,11 @@ src_prepare() {
 		sed -i 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' tools/generate_shim_headers/generate_shim_headers.py || die
 	fi
 	
+	# Work around broken screen sharing in Google Meet
+  	# https://crbug.com/829916#c16
+  	sed -i 's/"Chromium/"Chrome/' chrome/common/chrome_content_client_constants.cc || die
+
+	
 	if use gcc; then
 		ewarn "Applying patches from fedora to build with GCC 8. It is unsupported upstream and the output binary will be slower."
 		epatch "${FILESDIR}/chromium-65.0.3325.162-boolfix.patch"
@@ -498,14 +493,9 @@ src_configure() {
 		yasm
 		zlib
 	)
-	if use system-ffmpeg; then
-		gn_system_libraries+=( ffmpeg opus )
-	fi
+	gn_system_libraries+=( ffmpeg opus )
 	if use system-icu; then
 		gn_system_libraries+=( icu )
-	fi
-	if use system-libvpx; then
-		gn_system_libraries+=( libvpx )
 	fi
 	build/linux/unbundle/replace_gn_files.py --system-libraries "${gn_system_libraries[@]}" || die
 
@@ -538,12 +528,14 @@ src_configure() {
 	if use official; then
 		myconf_gn+=" use_lld=true"
 		myconf_gn+=" is_official_build=true"
-		myconf_gn+=" enable_swiftshader=false"
 		myconf_gn+=" linux_use_bundled_binutils=false"
 		myconf_gn+=" use_custom_libcxx=false"
 		myconf_gn+=" is_chrome_branded=false"
 	fi
 	
+	if use swiftshader; then
+		myconf_gn+=" enable_swiftshader=true"
+	fi
 	
 	if use strip-debug-symb; then
 		myconf_gn+=" strip_absolute_paths_from_debug_symbols=true"
@@ -573,10 +565,6 @@ src_configure() {
 	myconf_gn+=" is_unsafe_developer_build=$(usex unsafedevfeatures true false)"
 	myconf_gn+=" media_use_ffmpeg=$(usex system-ffmpeg true false)"
 	myconf_gn+=" use_gtk3=$(usex gtk3 true false)"
-	myconf_gn+=" use_system_lcms2=$(usex system-lcms true false)"
-	myconf_gn+=" use_system_libdrm=$(usex system-libdrm true false)"
-	myconf_gn+=" use_system_libpng=$(usex system-libpng true false)"
-	myconf_gn+=" use_system_zlib=$(usex system-zlib true false)"
 	myconf_gn+=" use_vaapi=$(usex vaapi true false)"
 	myconf_gn+=" use_lld=$(usex lld true false)"
 	
@@ -629,9 +617,9 @@ src_configure() {
 		fi
 
 		# Prevent libvpx build failures. Bug 530248, 544702, 546984.
-		if [[ ${myarch} == amd64 || ${myarch} == x86 ]]; then
-			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
-		fi
+		#if [[ ${myarch} == amd64 || ${myarch} == x86 ]]; then
+			#filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2
+		#fi
 	fi
 
 	# https://bugs.gentoo.org/588596
@@ -641,21 +629,21 @@ src_configure() {
 	export TMPDIR="${WORKDIR}/temp"
 	mkdir -p -m 755 "${TMPDIR}" || die
 
-	if ! use system-ffmpeg; then
-		local build_ffmpeg_args=""
-		if use pic && [[ "${ffmpeg_target_arch}" == "ia32" ]]; then
-			build_ffmpeg_args+=" --disable-asm"
-		fi
+	#if ! use system-ffmpeg; then
+		#local build_ffmpeg_args=""
+		#if use pic && [[ "${ffmpeg_target_arch}" == "ia32" ]]; then
+			#build_ffmpeg_args+=" --disable-asm"
+		#fi
 
 		# Re-configure bundled ffmpeg. See bug #491378 for example reasons.
-		einfo "Configuring bundled ffmpeg..."
-		pushd third_party/ffmpeg > /dev/null || die
-		chromium/scripts/build_ffmpeg.py linux ${ffmpeg_target_arch} \
-			--branding ${ffmpeg_branding} -- ${build_ffmpeg_args} || die
-		chromium/scripts/copy_config.sh || die
-		chromium/scripts/generate_gn.py || die
-		popd > /dev/null || die
-	fi
+		#einfo "Configuring bundled ffmpeg..."
+		#pushd third_party/ffmpeg > /dev/null || die
+		#chromium/scripts/build_ffmpeg.py linux ${ffmpeg_target_arch} \
+			#--branding ${ffmpeg_branding} -- ${build_ffmpeg_args} || die
+		#chromium/scripts/copy_config.sh || die
+		#chromium/scripts/generate_gn.py || die
+		#popd > /dev/null || die
+	#fi
 
 	bootstrap_gn
 
